@@ -5,12 +5,17 @@ class HG_Controller {
 	private static $instance;
 	private $handlerTable;// = array ();
 	private $pathContext;// = array_slice (split ('/', trim ($_SERVER ['REQUEST_URI'], '/')), 1);
+	public $headers;
 						   
 	public function __construct () {
 		self::$instance =& $this;
 		$this -> handlerIndexTable = array ();
 		$this -> handlerTable = array ();
 		$this -> pathContext = array_slice (split ('/', urldecode (trim ($_SERVER ['REQUEST_URI'], '/'))), 1);
+		print_r ($this -> pathContext);
+		//headers
+	
+		$this -> headers = getallheaders(); 
 	}
 
 	public static function &getInstance () {
@@ -42,10 +47,11 @@ class HG_Controller {
 
 	// database loader.
 	public function database ($driverName, $config) {
+		echo 'q';
 		require_once BASEPATH . 'database/DB_driver.php';
 		
 		require_once BASEPATH . 'database/drivers/' . $driverName . '.php';
-	
+		
 		if (!$this -> db) {
 			$driver = 'HG_' . $driverName;
 			$this -> db = new $driver ($config);

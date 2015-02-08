@@ -4,7 +4,7 @@
 	
 	require_once BASEPATH . 'Controller.php';
 
-		
+	
 	// Create super object.
 	new HG_Controller ();
 
@@ -48,11 +48,28 @@
 	require_once APPPATH . 'config/config.php';
 	require_once APPPATH . 'mappers/TableListMapper.php';
 	require_once APPPATH . 'mappers/ArticleMapper.php';
-
-
+	require_once APPPATH . 'controllers/restApiController.php';
+	//
+	//echo 'c';
+	
+	
 	$HG =& getInstance ();
 	//print_r ($dbParams);
+	echo 'a';
 	$HG -> database ('mysqli_driver', $dbParams);
+	
+
+	
+	function testRequest () {
+		$HG =& getInstance ();
+		$accepts = $HG -> headers ['Accept'];
+		echo 'k';
+		print_r ($HG -> headers);
+	}
+
+	$HG -> setRequestHandler ('testRequest', array ('/^testRequest$/'), 'GET', "testRequest");
+
+	//end test
 
 	$HG -> setRequestHandler ('index', array ('/^main.html$/'), 'GET', "\indexController\index");
 	//$HG -> addPreHandlerHook ('index', 'pre_index_hook');
@@ -63,8 +80,13 @@
 	$HG -> setRequestHandler ('testAjax', array ('/^testajax$/'), 'GET', '\testController\ajaxTest');
 	$HG -> setRequestHandler ('testUpload', array ('/^testUpload$/'), 'GET', '\testController\testUpload');
 	$HG -> setRequestHandler ('login', array ('/^login$/'), 'GET', '\login\loginPage');
-	$HG -> setRequestHandler ('admin', array ('/^admin$/'), 'GET', '\adminController\adminPage');
+	$HG -> setRequestHandler ('adminq', array ('/^admin$/'), 'GET', '\adminController\adminPage');
 	$HG -> setRequestHandler ('upload', array ('/^upload$/'), 'POST', '\uploadController\upload');
+
+	//Rest API
+	$HG -> setRequestHandler ('restApi', array ('/^.+$/'), 'GET', 'restApiHandler');
+
+echo 'x';
 	$HG -> route ();
 	
 ?>

@@ -5,6 +5,7 @@ class TableListMapper {
 	var $driver;
 
 	public function __construct ($driver) {
+		echo 'TableListMapper __construct';
 		$this -> driver = $driver;
 	}
 
